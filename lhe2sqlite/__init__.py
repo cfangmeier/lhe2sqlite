@@ -1,5 +1,5 @@
 
-from os.path import isfile, splitext
+from os.path import isfile
 from os import remove
 import xml.etree.ElementTree as ET
 import gzip
@@ -9,7 +9,9 @@ __all__ = [
     'convert'
 ]
 
-CONN: sqlite3.Connection = None
+__version__ = '0.1.0'
+
+CONN = None
 
 
 def init_tables():
@@ -77,17 +79,17 @@ def convert(filename_in, filename_out):
             evnt_line, part_lines = data[0], data[1:]
 
             evnt_toks = evnt_line.split()
+            items = [event_idx] + evnt_toks[1:]
             CONN.execute('''\
             INSERT INTO event VALUES (?,?,?,?,?,?) 
-            ''',
-                         (event_idx, *evnt_toks[1:]))
+            ''', items)
 
             for part_line in part_lines:
                 part_toks = part_line.split()
+                items = [event_idx] + part_toks
                 CONN.execute('''\
                 INSERT INTO particle VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) 
-                ''',
-                             (event_idx, *part_toks))
+                ''', items)
 
             # TODO: Look through children to fill in reweight info.
             # for child in element:

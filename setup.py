@@ -1,11 +1,5 @@
 from setuptools import setup
-from vitex import __version__
-
-import sys
-
-if sys.version_info < (3, 6):
-    print('vitex requires python>=3.6.')
-    exit(1)
+from lhe2sqlite import __version__
 
 with open('README.md') as f:
     desc = f.read()
@@ -26,8 +20,8 @@ setup(
         'Intended Audience :: Developers',
         'Intended Audience :: End Users/Desktop',
         'Operating System :: Unix',
+        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3 :: Only',
     ],
     keywords='lhe sqlite',
     packages=['lhe2sqlite'],
