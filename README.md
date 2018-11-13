@@ -17,6 +17,24 @@ convertlhe2sqlite input.lhe output.sqlite3
 
 Then you can examine the content with either stright SQL or your analysis tool of choice (eg pandas).
 
+## Example Usage
+
+Once the sqlite db has been created, one can plot simple kinematic distributions
+using basic pandas. For example, to plot the pt distribution of top quarks in a sample.
+
+```python
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+
+df = pd.read_sql_query(('select px, py, pz from particle '
+                        'where abs(pdgid)==6 and abs(status)==1'),
+                       'sqlite:///result.sqlite3')
+df['pt'] = np.sqrt(df['px']**2 + df['py']**2)
+df['pt'].hist()
+plt.show()
+```
+
 ## Schema
 
 The resulting database has just 2 tables, `event`, and `particle` with a one-to-many relationship between them.
@@ -47,3 +65,4 @@ CREATE TABLE particle (
     spin FLOAT
 );
 ```
+
