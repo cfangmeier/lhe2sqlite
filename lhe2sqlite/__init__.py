@@ -53,7 +53,6 @@ def convert(filename_in, filename_out):
     if not uncompressed and not compressed:
         raise ValueError("Invalid input: " + filename_in)
 
-
     if filename_out is None:
         if filename_in.endswith('.lhe'):
             filename_out = filename_in[:-3] + 'sqlite3'
@@ -81,14 +80,14 @@ def convert(filename_in, filename_out):
             evnt_toks = evnt_line.split()
             items = [event_idx] + evnt_toks[1:]
             CONN.execute('''\
-            INSERT INTO event VALUES (?,?,?,?,?,?) 
+            INSERT INTO event VALUES (?,?,?,?,?,?)
             ''', items)
 
             for part_line in part_lines:
                 part_toks = part_line.split()
                 items = [event_idx] + part_toks
                 CONN.execute('''\
-                INSERT INTO particle VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?) 
+                INSERT INTO particle VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                 ''', items)
 
             # TODO: Look through children to fill in reweight info.
